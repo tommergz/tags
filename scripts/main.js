@@ -8,6 +8,7 @@ let tagContainer = document.querySelector('.tags')
 let tagUpdater = document.querySelector('.tag-updater-wrapper')
 let newTagSetter = document.querySelector('.update-button')
 let closeTagUpdater = document.querySelector('.close-textarea')
+let readOnlyModeBox = document.querySelector('.read-only-mode')
 
 let tags = []
 
@@ -20,6 +21,7 @@ const setLocalStorage = (data) => {
 }
 
 let tagsVisibility = false
+let readOnlyMode = false
 
 const app = {
 
@@ -41,7 +43,7 @@ const app = {
   },
 
   delete: function(e) {
-    if (e.target.className === 'close-tag') {
+    if (e.target.className === 'close-tag' && !readOnlyMode) {
       let tag = e.target.parentNode.firstElementChild.innerText
       let index = tags.indexOf(tag)
       tags.splice(index, 1)
@@ -102,6 +104,20 @@ const app = {
     this.reloadTags()
     newTagContainer.value = ''
     tagUpdater.style.display = 'none'
+  },
+
+  setReadOnlyMode: () => {
+    if (readOnlyModeBox.checked) {
+      tagText.disabled = true
+      addTagButton.disabled = true
+      updateTagsButton.disabled = true
+      readOnlyMode = true
+    } else {
+      tagText.disabled = false
+      addTagButton.disabled = false
+      updateTagsButton.disabled = false
+      readOnlyMode = false
+    }
   }
 
 }
@@ -113,3 +129,4 @@ tagContainer.addEventListener('click', (e) => app.delete(e))
 updateTagsButton.addEventListener('click', app.openTagListEditor)
 closeTagUpdater.addEventListener('click', app.closeTagListEditor)
 newTagSetter.addEventListener('click', () => app.updateTags(newTagContainer.value))
+readOnlyModeBox.addEventListener('change', app.setReadOnlyMode)

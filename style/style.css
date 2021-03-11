@@ -43,6 +43,24 @@ button {
   cursor: pointer; 
 }
 
+.read-only-mode-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  color: #ffff;
+  padding-bottom: 10px;
+}
+
+.read-only-mode {
+  margin: 0px 14px;
+}
+
+input[type=checkbox] {
+  transform: scale(2);
+  -ms-transform: scale(2);
+  -webkit-transform: scale(2);
+}
+
 .tags {
   display: none;
   flex-wrap: wrap;
