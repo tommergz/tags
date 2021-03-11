@@ -93,6 +93,10 @@ button {
   justify-content: center;
 }
 
+.tag-textarea {
+  padding: 10px;
+}
+
 .update-button {
   width: auto;
 }
