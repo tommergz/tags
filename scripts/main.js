@@ -5,17 +5,23 @@ let hideTagsButton = document.querySelector('.hide')
 let updateTagsButton = document.querySelector('.update')
 let tagContainer = document.querySelector('.tags')
 
-const tags = []
-let tagsVisibility = false
+let tags = []
+
+if (localStorage.getItem('data')) {
+  tags = JSON.parse(localStorage.getItem('data'))
+}
 
 const setLocalStorage = (data) => {
   localStorage.setItem('data', JSON.stringify(tags))
 }
 
+let tagsVisibility = false
+
 const app = {
   add: function(newTag) {
     if (tags.indexOf(newTag) < 0) {
       tags.push(`#${newTag}`)
+      setLocalStorage(tags)
     }
     tagText.value = ''
     if (tagsVisibility) this.showTags()
@@ -26,26 +32,33 @@ const app = {
       let tag = e.target.parentNode.firstElementChild.innerText
       let index = tags.indexOf(tag)
       tags.splice(index, 1)
-      if (tagsVisibility) this.showTags()
+      setLocalStorage(tags)
+      if (!tags.length) {
+        this.hideTags()
+      } else {
+        if (tagsVisibility) this.showTags()
+      }
     }
   },
 
   showTags: () => {
     
-    let allTags = ``
-    tags.forEach(el => {
-      allTags += `
-        <div class="tag" id="${el}">
-          <div class="tag-text">
-            ${el}
+    if (tags.length) {
+      let allTags = ``
+      tags.forEach(el => {
+        allTags += `
+          <div class="tag" id="${el}">
+            <div class="tag-text">
+              ${el}
+            </div>
+            <img class="close-tag" src="./assets/images/close.svg" />
           </div>
-          <img class="close-tag" src="./assets/images/close.svg" />
-        </div>
-      `
-    })
-    tagContainer.innerHTML = allTags
-    tagContainer.style.display = 'flex'
-    tagsVisibility = true
+        `
+      })
+      tagContainer.innerHTML = allTags
+      tagContainer.style.display = 'flex'
+      tagsVisibility = true
+    }
   },
 
   hideTags: () => {
